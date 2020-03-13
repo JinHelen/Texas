@@ -1,28 +1,29 @@
 package com.itranswarp.learnjava;
 
 public class Texas {
-	
-	 public static int[] newnum_b = new int[5];
-	 public static int[] newnum_w = new int[5];
-
+		//两个执收方
+	 	public static int[] black_num = new int[5];
+	 	public static int[] white_num = new int[5];
+	 	//比较
 	    public static String Compare(String black, String white) {
-
-	        char[] chb = black.toCharArray();
-	        char[] chw = white.toCharArray();
-	        int[] chb_num = new int[5];
-	        char[] chb_color = new char[5];
-	        int[] chw_num = new int[5];
-	        char[] chw_color = new char[5];
+	    	
+	        char[] b = black.toCharArray();
+	        char[] w = white.toCharArray();
+	        //牌号和花色
+	        int[] b_num = new int[5];
+	        char[] b_color = new char[5];
+	        int[] w_num = new int[5];
+	        char[] w_color = new char[5];
 	        for (int i = 0; i < 5; i++) {
-	            chb_num[i] = change(chb[2 * i]);
-	            chw_num[i] = change(chw[2 * i]);
-	            chb_color[i] = chb[2 * i + 1];
-	            chw_color[i] = chw[2 * i + 1];
+	            b_num[i] = change(b[2 * i]);
+	            w_num[i] = change(w[2 * i]);
+	            b_color[i] = b[2 * i + 1];
+	            w_color[i] = w[2 * i + 1];
 	        }
-	        setcard(chb_num,'b');
-	        setcard(chb_num,'w');
-	        int type_black = getType(chb_num, chb_color, 'b');
-	        int type_white = getType(chw_num, chw_color,'w');
+	        setcard(b_num,'b');
+	        setcard(b_num,'w');
+	        int type_black = getType(b_num, b_color, 'b');
+	        int type_white = getType(w_num, w_color,'w');
 
 	        if(type_black>type_white){
 	            return "Black wins";
@@ -43,7 +44,7 @@ public class Texas {
 	        else if(cha=='A') return 14;
 	        else return cha-'0';
 	    }
-
+	
 	    public static int getType(int[] num, char[] color, char ca) {
 
 	        int[] cardNum = new int[15];
@@ -64,26 +65,27 @@ public class Texas {
 	                Straight = false;
 	                break;
 	            }
+	        //判断牌是否相连或花色同
 	        if (Straight || Flush) {
-	            if (Straight && Flush) {
+	            if (Straight && Flush) {//同花顺
 	                type = 9;
 	                setcard(num,ca);
-	            } else if (Straight) {
+	            } else if (Straight) {//顺子
 	                type = 5;
 	                setcard(num,ca);
 	            }
-	            else {
+	            else {//同花
 	                type = 6;
 	                setcard(num,ca);
 	            }
 	            return type;
 	        }
-	        // others
+	        
 	        int[] pairs = new int[5];
 	        for (int i = 2; i <= 14; i++) {
 	            pairs[cardNum[i]]++;
 	        }
-	        if (pairs[4] != 0)//四条
+	        if (pairs[4] != 0)
 	        {
 	            if (num[0] != num[1]) { // abbbb &&a>b
 	                int chan = num[0];
@@ -91,7 +93,7 @@ public class Texas {
 	                num[4] = chan;
 	            }
 	                setcard(num, ca);
-	                type = 8;
+	                type = 8;//铁支
 	        } else if (pairs[3] != 0) {
 	            int i;
 	            for (i = 0; i < 3; i++) {
@@ -119,9 +121,9 @@ public class Texas {
 	                setcard(buf,ca);
 	            }
 	            if (pairs[2] != 0)
-	                type = 7;
+	                type = 7;//葫芦
 	            else
-	                type = 4;
+	                type = 4;//三条
 	        } else if (pairs[2] != 0) {
 	            int[] buf = new int[5];
 	            if (pairs[2] == 2) {
@@ -145,7 +147,7 @@ public class Texas {
 	                }
 
 	            } else {
-	                type = 2;
+	                type = 2;//对子
 	                int i;
 	                for (i = 0; i < 4; i++) {
 	                    if (num[i] == num[i + 1])
@@ -162,7 +164,7 @@ public class Texas {
 	            }
 	        } else //high card
 	        {
-	            type = 1;
+	            type = 1;//散牌
 	            setcard(num,ca);
 	        }
 	        return type;
@@ -172,12 +174,12 @@ public class Texas {
 	        int index;
 	        if(c=='b') {
 	            for (index = 0; index < data.length; index++) {
-	                newnum_b[index] = data[index];
+	            	black_num[index] = data[index];
 	            }
 	        }
 	        else{
 	            for (index = 0; index < data.length; index++) {
-	                newnum_w[index] = data[index];
+	            	white_num[index] = data[index];
 	            }
 	        }
 	    }
@@ -187,36 +189,36 @@ public class Texas {
 	        int maxb = 0, maxw = 0;
 	        if (t == 9 || t==5) {
 	            for (j = 0; j < 5; j++) {
-	                maxb = Math.max(maxb, newnum_b[j]);
-	                maxw = Math.max(maxw, newnum_w[j]);
+	                maxb = Math.max(maxb, black_num[j]);
+	                maxw = Math.max(maxw, white_num[j]);
 	            }
 	            if (maxb > maxw) return "Black wins";
 	            else if (maxb < maxw) return "White wins";
 	            else return "Tie";
 	        }
 	        else if (t == 8 || t == 7 || t==4) {
-	            if (newnum_b[0] > newnum_w[0]) return "Black wins";
-	            else if (newnum_b[0] < newnum_w[0]) return "White wins";
+	            if (black_num[0] > white_num[0]) return "Black wins";
+	            else if (black_num[0] < white_num[0]) return "White wins";
 	            else return "Tie";
 	        }
 	        else if (t == 6 || t == 1) {
 	            for(int a=0;a<4;a++){
 	                for(int b=0;b<4-a;b++){
-	                    if(newnum_w[b]>newnum_w[b+1]){
-	                        int te = newnum_w[b];
-	                        newnum_w[b] = newnum_w[b+1];
-	                        newnum_w[b+1] = te;
+	                    if(white_num[b]>white_num[b+1]){
+	                        int te = white_num[b];
+	                        white_num[b] = white_num[b+1];
+	                        white_num[b+1] = te;
 	                    }
-	                    if(newnum_b[b]>newnum_b[b+1]){
-	                        int te = newnum_b[b];
-	                        newnum_b[b] = newnum_b[b+1];
-	                        newnum_b[b+1] = te;
+	                    if(black_num[b]>black_num[b+1]){
+	                        int te = black_num[b];
+	                        black_num[b] = black_num[b+1];
+	                        black_num[b+1] = te;
 	                    }
 	                }
 	            }
 	            for(int ind=4;ind>=0;ind--){
-	                if(newnum_w[ind]>newnum_b[ind]) return "White wins";
-	                if(newnum_w[ind]<newnum_b[ind]) return "Black wins";
+	                if(white_num[ind]>black_num[ind]) return "White wins";
+	                if(white_num[ind]<black_num[ind]) return "Black wins";
 	            }
 	            return "Tie";
 	        }
@@ -227,15 +229,15 @@ public class Texas {
 	            j=0;
 	            int flag=0;
 	            while(k<5){
-	                if(newnum_b[j]==newnum_b[k]){
+	                if(black_num[j]==black_num[k]){
 	                    if(flag==0) {
-	                        numb[0] = newnum_b[j];
+	                        numb[0] = black_num[j];
 	                        j++;
 	                        k=j+1;
 	                        flag = 1;
 	                    }
 	                    else{
-	                        numb[1] = newnum_b[j];
+	                        numb[1] = black_num[j];
 	                        break;
 	                    }
 	                }
@@ -244,19 +246,19 @@ public class Texas {
 	                }
 	            }
 	            if(k==5){
-	                numw[0] = newnum_w[1];
-	                numw[1] = numw[0]==newnum_w[2]?newnum_w[3]:newnum_w[2];
+	                numw[0] = white_num[1];
+	                numw[1] = numw[0]==white_num[2]?white_num[3]:white_num[2];
 	            }
 	            while(k<5){
-	                if(newnum_w[j]==newnum_w[k]){
+	                if(white_num[j]==white_num[k]){
 	                    if(flag==0) {
-	                        numb[0] = newnum_w[j];
+	                        numb[0] = white_num[j];
 	                        j++;
 	                        k=j+1;
 	                        flag = 1;
 	                    }
 	                    else{
-	                        numw[1] = newnum_w[j];
+	                        numw[1] = white_num[j];
 	                        break;
 	                    }
 	                }
@@ -265,8 +267,8 @@ public class Texas {
 	                }
 	            }
 	            if(k==5){
-	                numw[0] = newnum_w[1];
-	                numw[1] = numw[0]==newnum_w[2]?newnum_w[3]:newnum_w[2];
+	                numw[0] = white_num[1];
+	                numw[1] = numw[0]==white_num[2]?white_num[3]:white_num[2];
 	            }
 	            int data_b=0,data_w=0;
 	            if(Math.max(numb[0],numb[1])>Math.max(numw[0],numw[1])){
@@ -283,8 +285,8 @@ public class Texas {
 	            }
 	            else{
 	                for(j=0;j<5;j++){
-	                    if(newnum_b[j]!=numb[0]&&newnum_b[j]!=numb[1]) data_b = newnum_b[j];
-	                    if(newnum_w[j]!=numw[0]&&newnum_w[j]!=numw[1]) data_w = newnum_w[j];
+	                    if(black_num[j]!=numb[0]&&black_num[j]!=numb[1]) data_b = black_num[j];
+	                    if(white_num[j]!=numw[0]&&white_num[j]!=numw[1]) data_w = white_num[j];
 	                }
 	                if(data_b>data_w) return "Black wins";
 	                if(data_b<data_w) return "White wins";
@@ -299,9 +301,9 @@ public class Texas {
 	            int[] w = new int[3];
 	            int m=0,n=0;
 	            for(j=0;j<5;j++){
-	                m = newnum_b[j];
+	                m = black_num[j];
 	                for(q=0;q<5;q++){
-	                    if(m==newnum_b[q] && m!=q)
+	                    if(m==black_num[q] && m!=q)
 	                        break;
 	                }
 	                if(q<5)
@@ -311,14 +313,14 @@ public class Texas {
 	            y=0;
 	            while(z<3){
 	                if(y!=j && y!=q)
-	                    b[z++] = newnum_b[y++];
+	                    b[z++] = black_num[y++];
 	                else
 	                    y++;
 	            }
 	            for(j=0;j<5;j++){
-	                n = newnum_w[j];
+	                n = white_num[j];
 	                for(q=0;q<5;q++){
-	                    if(n==newnum_w[q] && n!=q)
+	                    if(n==white_num[q] && n!=q)
 	                        break;
 	                }
 	                if(q<5)
@@ -328,7 +330,7 @@ public class Texas {
 	            y=0;
 	            while(z<3){
 	                if(y!=j && y!=q)
-	                    w[z++] = newnum_w[y++];
+	                    w[z++] = white_num[y++];
 	                else
 	                    y++;
 	            }
