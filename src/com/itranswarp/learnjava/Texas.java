@@ -196,11 +196,13 @@ public class Texas {
 	            else if (maxb < maxw) return "White wins";
 	            else return "Tie";
 	        }
+	        //在第8，7，4种情况下的比较
 	        else if (t == 8 || t == 7 || t==4) {
 	            if (black_num[0] > white_num[0]) return "Black wins";
 	            else if (black_num[0] < white_num[0]) return "White wins";
 	            else return "Tie";
 	        }
+	      //在第6，1种情况下的比较
 	        else if (t == 6 || t == 1) {
 	            for(int a=0;a<4;a++){
 	                for(int b=0;b<4-a;b++){
@@ -222,6 +224,7 @@ public class Texas {
 	            }
 	            return "Tie";
 	        }
+	      //在第3种情况下的比较
 	         else if (t == 3) {
 	            int[] numb = new int[2];
 	            int[] numw = new int[2];
@@ -245,6 +248,7 @@ public class Texas {
 	                    k++;
 	                }
 	            }
+	          //在第5种情况下的比较
 	            if(k==5){
 	                numw[0] = white_num[1];
 	                numw[1] = numw[0]==white_num[2]?white_num[3]:white_num[2];
